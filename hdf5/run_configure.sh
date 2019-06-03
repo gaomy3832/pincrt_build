@@ -30,3 +30,12 @@ LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib" \
 LIBS="-lpin3c_missing" \
 ./configure --prefix=${PREFIX}
 
+# PinCRT rand_r() is not actually random, will generate even and odd numbers
+# alternatively. random() is much better.
+sed -i -e "/H5_HAVE_RAND_R/ c \/* #undef H5_HAVE_RAND_R *\/" ./src/H5pubconf.h || exit 1
+sed -i -e "/HAVE_RAND_R/ c \/* #undef HAVE_RAND_R *\/" ./src/H5config.h || exit 1
+
+# PinCRT does not provide actual implementations for dlopen, dlsym, dlclose, etc.
+sed -i -e "/H5_HAVE_LIBDL/ c \/* #undef H5_HAVE_LIBDL *\/" ./src/H5pubconf.h || exit 1
+sed -i -e "/HAVE_LIBDL/ c \/* #undef HAVE_LIBDL *\/" ./src/H5config.h || exit 1
+
