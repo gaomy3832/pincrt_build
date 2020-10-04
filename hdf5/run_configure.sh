@@ -25,7 +25,9 @@ sed -i "$(($(wc -l < 'src/H5private.h')-2)) i #undef STATIC" ./src/H5private.h |
 # functions.
 sed -i -e "s/major/_major/g" -e "s/minor/_minor/g" ./test/tcheck_version.c || exit 1
 
+# Depends on zlib.h
 CC="gcc -specs=${SPECS} -nostdlib" \
+CFLAGS="-I${PREFIX}/include" \
 LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib" \
 LIBS="-lpin3c_missing" \
 ./configure --prefix=${PREFIX}
