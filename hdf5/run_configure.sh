@@ -41,3 +41,19 @@ sed -i -e "/HAVE_RAND_R/ c \/* #undef HAVE_RAND_R *\/" ./src/H5config.h || exit 
 sed -i -e "/H5_HAVE_LIBDL/ c \/* #undef H5_HAVE_LIBDL *\/" ./src/H5pubconf.h || exit 1
 sed -i -e "/HAVE_LIBDL/ c \/* #undef HAVE_LIBDL *\/" ./src/H5config.h || exit 1
 
+# PinCRT does not implement dlopen, so we need to disable tests that use dlopen.
+# These are mostly plugin tests, with test_filter_plugin.sh in test/Makefile,
+# h5diff_plugin.sh in tools/test/h5diff/Makefile, h5dump_plugin.sh in
+# tools/test/h5dump/Makefile, h5repack_plugin.sh in
+# tools/test/h5repack/Makefile, h5ls_plugin.sh in tools/test/h5ls/Makefile
+pattern="^am__append_1 = "
+echo ""
+echo "########################################"
+echo "Please check the following suppression"
+echo "########################################"
+for f in $(find ./test/ ./tools/ -name Makefile -exec grep -rl "$pattern" {} \;); do
+    echo "Suppress plugin test in $f"
+    sed -i -e "s/$pattern/#&/g w /dev/stdout" $f
+done
+unset pattern
+
