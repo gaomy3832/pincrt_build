@@ -12,8 +12,11 @@ if [ ! -f ${SPECS} ]; then
     exit 1
 fi
 
-CC="gcc -specs=${SPECS} -nostdlib" \
-LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib" \
-LIBS="-lpin3c_missing" \
+if ! ls ${PREFIX}/lib/libpincrtpatch.* > /dev/null 2>&1; then
+    echo "First install libpincrtpatch to ${PREFIX}/lib"
+    exit 1
+fi
+
+CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib" \
 ./configure --prefix=${PREFIX} --disable-cxx
 

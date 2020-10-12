@@ -12,7 +12,7 @@ if [ ! -f ${SPECS} ]; then
     exit 1
 fi
 
-CC="gcc -specs=${SPECS} -nostdlib" \
+CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib" \
 LDSHAREDLIBC="" \
 ./configure --prefix=${PREFIX}
 

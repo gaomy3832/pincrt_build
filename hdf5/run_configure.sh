@@ -12,6 +12,11 @@ if [ ! -f ${SPECS} ]; then
     exit 1
 fi
 
+if ! ls ${PREFIX}/lib/libpincrtpatch.* > /dev/null 2>&1; then
+    echo "First install libpincrtpatch to ${PREFIX}/lib"
+    exit 1
+fi
+
 # Add to the end of src/H5private.h
 #  #undef STATIC
 # This is because ${PINPATH}/extras/crt/include/types_marker.h has defined
@@ -26,10 +31,9 @@ sed -i "$(($(wc -l < 'src/H5private.h')-2)) i #undef STATIC" ./src/H5private.h |
 sed -i -e "s/major/_major/g" -e "s/minor/_minor/g" ./test/tcheck_version.c || exit 1
 
 # Depends on zlib.h
-CC="gcc -specs=${SPECS} -nostdlib" \
+CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib" \
 CFLAGS="-I${PREFIX}/include" \
 LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib" \
-LIBS="-lpin3c_missing" \
 ./configure --prefix=${PREFIX}
 
 # PinCRT rand_r() is not actually random, will generate even and odd numbers

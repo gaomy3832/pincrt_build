@@ -12,11 +12,15 @@ if [ ! -f ${SPECS} ]; then
     exit 1
 fi
 
+if ! ls ${PREFIX}/lib/libpincrtpatch.* > /dev/null 2>&1; then
+    echo "First install libpincrtpatch to ${PREFIX}/lib"
+    exit 1
+fi
+
 # In Makefile, change DESTDIR to the install path.
 sed -i "/DESTDIR=/ c DESTDIR=${PREFIX}" Makefile || exit 1
 
-CC="gcc -specs=${SPECS} -nostdlib -DMBEDTLS_NO_UDBL_DIVISION" \
-LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib -lpin3c_missing" \
+CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib -DMBEDTLS_NO_UDBL_DIVISION" \
 SHARED=1 \
 make no_test
 
