@@ -22,5 +22,5 @@ sed -i "/DESTDIR=/ c DESTDIR=${PREFIX}" Makefile || exit 1
 
 CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib -DMBEDTLS_NO_UDBL_DIVISION" \
 SHARED=1 \
-make no_test
+make no_test $@
 
