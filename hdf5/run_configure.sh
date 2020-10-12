@@ -30,11 +30,14 @@ sed -i "$(($(wc -l < 'src/H5private.h')-2)) i #undef STATIC" ./src/H5private.h |
 # functions.
 sed -i -e "s/major/_major/g" -e "s/minor/_minor/g" ./test/tcheck_version.c || exit 1
 
+# We enable production mode build.
+# Since 1.12.0, the default mode is debug, which uses option -ftrapv that
+# introduces trapping arithmetics like __addvsi3, etc. not supported by PinCRT.
 # Depends on zlib.h
 CC="gcc -specs=${SPECS} -nostdlib -pincrtpatchpath=${PREFIX}/lib" \
 CFLAGS="-I${PREFIX}/include" \
 LDFLAGS="-L${PREFIX}/lib -Wl,-R${PREFIX}/lib" \
-./configure --prefix=${PREFIX}
+./configure --prefix=${PREFIX} --enable-build-mode=production
 
 # PinCRT rand_r() is not actually random, will generate even and odd numbers
 # alternatively. random() is much better.
