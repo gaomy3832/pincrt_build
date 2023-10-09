@@ -21,14 +21,18 @@ PinCRT requirements
 GCC's spec file
 ---
 
-1. change the `cc1` rule, by renaming it and adding more flags.
+1. dump the default spec file by `gcc -dumpspecs`.
 
-2. add the header paths with `-isystem` in the `cc1` rule.
+2. change the `cc1` rule, by renaming it and adding more flags.
 
-3. create a new rule `pincrt_link` for link flags, and modify the
+3. add the header paths with `-isystem` in the `cc1` rule.
+
+4. change the `cc1plus` rule, by renaming it and adding more flags.
+
+5. create a new rule `pincrt_link` for link flags, and modify the
    `link_command` rule to use it.
 
-4. create new rules `pincrt_startfile`, `pincrt_endfile`, `pincrt_libs`, and
+6. create new rules `pincrt_startfile`, `pincrt_endfile`, `pincrt_libs`, and
    modify the `link_command` rule to use them. Also, use `%:remove-outfile()`
    function to remove the standard libraries.
 
