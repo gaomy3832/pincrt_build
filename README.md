@@ -29,8 +29,8 @@ GCC's spec file
 
 4. change the `cc1plus` rule, by renaming it and adding more flags.
 
-5. create a new rule `pincrt_link` for link flags, and modify the
-   `link_command` rule to use it.
+5. create a new rule `pin_link` for link flags, and modify the `link_command`
+   rule to use it.
 
 6. create new rules `pincrt_startfile`, `pincrt_endfile`, `pincrt_libs`, and
    modify the `link_command` rule to use them. Also, use `%:remove-outfile()`
