@@ -6,11 +6,11 @@ Edit and configure step.
 
 Make step.
 
-    make -j -l16
+    make -j16
 
 Test step.
 
-    PIN_CRT_TZDATA=${PINPATH}/extras/crt/tzdata make check
+    PIN_CRT_TZDATA="" make check
 
 Install step.
 

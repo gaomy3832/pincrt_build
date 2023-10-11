@@ -5,7 +5,7 @@ No configure step.
 
 Edit and make step.
 
-    ../run_make.sh
+    ../run_make.sh -j16
 
 Test step.
 
